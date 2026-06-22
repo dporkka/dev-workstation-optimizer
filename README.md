@@ -2,6 +2,8 @@
 
 # Dev Workstation Optimizer
 
+[![Test](https://github.com/dporkka/dev-workstation-optimizer/actions/workflows/test.yml/badge.svg)](https://github.com/dporkka/dev-workstation-optimizer/actions/workflows/test.yml)
+
 A collection of scripts and configs to optimize **Windows**, **WSL2**, and **native Ubuntu/Debian** for heavy software development: faster builds, better RAM usage, less background noise, and more free disk space.
 
 ## One-Command Quick Start
@@ -15,6 +17,19 @@ bash optimize.sh
 ```
 
 `optimize.sh` auto-detects your OS (Windows, WSL, native Linux) and runs the right optimizations.
+
+## Development / Makefile
+
+This repo includes a `Makefile` for contributors and maintainers:
+
+```bash
+make test         # Run all tests
+make lint         # Run shellcheck on bash scripts
+make format       # Format shell scripts with shfmt
+make check-shell  # Syntax-check bash scripts
+make install      # Symlink dev-optimizer and dev-cleanup to ~/.local/bin
+make clean        # Remove generated files
+```
 
 ## What It Optimizes
 
