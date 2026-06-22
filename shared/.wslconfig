@@ -1,0 +1,12 @@
+[wsl2]
+# Example .wslconfig for a host with 32 GB RAM.
+# Adjust memory= based on your installed RAM and Windows workload.
+memory=20GB
+processors=10
+swap=4GB
+swapFile=C:\\wsl-swap\\wslswap.vhdx
+localhostForwarding=true
+dnsTunneling=true
+autoMemoryReclaim=gradual
+pageReporting=true
+networkingMode=mirrored

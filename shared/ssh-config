@@ -1,0 +1,18 @@
+# Example SSH config with connection multiplexing.
+# Copy relevant sections into ~/.ssh/config (chmod 600).
+
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ControlMaster auto
+  ControlPath ~/.ssh/controlmasters/%r@%h:%p
+  ControlPersist 10m
+
+Host *
+  ControlMaster auto
+  ControlPath ~/.ssh/controlmasters/%r@%h:%p
+  ControlPersist 5m
+  ServerAliveInterval 60
+  ServerAliveCountMax 3

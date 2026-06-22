@@ -1,0 +1,24 @@
+{
+  "typescript.tsserver.maxTsServerMemory": 3072,
+  "typescript.tsserver.nodePath": "node",
+  "search.followSymlinks": false,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/dist/**": true,
+    "**/.turbo/**": true,
+    "**/coverage/**": true,
+    "**/build/**": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/.turbo": true,
+    "**/coverage": true
+  },
+  "telemetry.telemetryLevel": "off"
+}
