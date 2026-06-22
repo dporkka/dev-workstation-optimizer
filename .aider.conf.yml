@@ -1,0 +1,16 @@
+# Aider configuration for dev-workstation-optimizer
+# Aider is an AI pair programming tool: https://aider.chat/
+
+model: gpt-4o
+weak-model: gpt-4o-mini
+
+# Tell Aider about the project
+read:
+  - AGENTS.md
+  - README.md
+
+# Auto-commits are disabled; review changes before committing
+auto-commits: false
+
+# Keep messages focused
+chat-history-file: .aider.chat.history.md

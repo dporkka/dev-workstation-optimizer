@@ -2,7 +2,19 @@
 
 # Dev Workstation Optimizer
 
-A collection of scripts and configs to optimize Windows + WSL2 (and generic Linux) for heavy software development: faster builds, better RAM usage, less background noise, and more free disk space.
+A collection of scripts and configs to optimize **Windows**, **WSL2**, and **native Ubuntu/Debian** for heavy software development: faster builds, better RAM usage, less background noise, and more free disk space.
+
+## One-Command Quick Start
+
+Clone the repo and run the cross-platform entry point:
+
+```bash
+git clone https://github.com/dporkka/dev-workstation-optimizer.git
+cd dev-workstation-optimizer
+bash optimize.sh
+```
+
+`optimize.sh` auto-detects your OS (Windows, WSL, native Linux) and runs the right optimizations.
 
 ## What It Optimizes
 
@@ -10,9 +22,10 @@ A collection of scripts and configs to optimize Windows + WSL2 (and generic Linu
 |---|---|
 | **Windows** | High Performance power plan, remove startup apps, Defender exclusions for WSL, disable Delivery Optimization, Game Mode, visual effects, Storage Sense |
 | **WSL memory** | Correctly size `.wslconfig` based on installed RAM |
+| **Native Ubuntu** | Same Linux tuning as WSL, without Windows-specific steps |
 | **Swap** | Fast zram + small disk swap fallback |
 | **Kernel** | `vm.swappiness`, `vm.vfs_cache_pressure`, OOM behavior, dirty ratios |
-| **Services** | Disable unnecessary Ubuntu cloud/snap services inside WSL |
+| **Services** | Disable unnecessary Ubuntu cloud/snap services |
 | **VS Code** | Exclude build dirs from file watcher, limit tsserver memory, disable telemetry |
 | **Git** | `fsmonitor`, `untrackedCache`, `manyFiles`, pack threads |
 | **SSH** | Connection multiplexing for faster git fetch/push |
@@ -21,9 +34,18 @@ A collection of scripts and configs to optimize Windows + WSL2 (and generic Linu
 | **Build tools** | `MAKEFLAGS`, `CMAKE_BUILD_PARALLEL_LEVEL`, `GOMAXPROCS` |
 | **Disk** | WSL vhdx compaction helper, weekly cleanup script |
 
-## Quick Start
+## Usage
 
-### 1. Windows
+### Cross-Platform Entry Point
+
+```bash
+bash optimize.sh              # Auto-detect OS and optimize
+bash optimize.sh --dry-run    # Preview changes without applying
+bash optimize.sh --yes        # Skip confirmation prompts
+bash optimize.sh --with-aider # Print an Aider prompt for AI-assisted customization
+```
+
+### Windows Only
 
 Open PowerShell **as Administrator**:
 
@@ -38,13 +60,14 @@ Then compact the WSL virtual disk:
 .\windows\Compact-WslVhdx.ps1
 ```
 
-### 2. WSL / Linux
+### WSL Only
 
 Inside WSL:
 
 ```bash
-cd wsl-linux
-bash optimize-wsl.sh
+bash optimize.sh
+# or directly:
+bash wsl-linux/optimize-linux.sh
 ```
 
 Restart WSL:
@@ -62,22 +85,54 @@ swapon --show
 zramctl
 ```
 
-### 3. Weekly Maintenance
+### Native Ubuntu / Debian
+
+On bare-metal Ubuntu or Debian:
+
+```bash
+bash optimize.sh
+# or directly:
+bash wsl-linux/optimize-linux.sh
+```
+
+This skips WSL/Windows-specific steps and applies Linux-native tuning.
+
+### Weekly Maintenance
 
 ```bash
 ~/.local/bin/dev-cleanup
 ```
 
+## AI-Assisted Customization (Aider)
+
+This repo includes Aider support:
+
+- `.aider.conf.yml` — Aider configuration
+- `AGENTS.md` — Instructions for coding agents
+- `optimize.sh --with-aider` — Prints a ready-to-paste prompt for Aider
+
+If you have [Aider](https://aider.chat/) installed:
+
+```bash
+aider
+```
+
+Then ask it to customize the optimizer for your specific workflow.
+
 ## Folder Layout
 
 ```
 dev-workstation-optimizer/
+├── optimize.sh                  # Cross-platform entry point
+├── AGENTS.md                    # Instructions for coding agents
+├── .aider.conf.yml              # Aider configuration
 ├── windows/
 │   ├── Optimize-WindowsForDev.ps1
 │   ├── Compact-WslVhdx.ps1
 │   └── README.md
 ├── wsl-linux/
-│   ├── optimize-wsl.sh
+│   ├── optimize-linux.sh        # WSL2 + native Ubuntu/Debian
+│   ├── optimize-wsl.sh          # Backward-compatible symlink
 │   ├── cleanup.sh
 │   ├── apply-system-optimizations.sh
 │   └── README.md
@@ -100,7 +155,7 @@ Results depend on your workload and hardware. These scripts remove bottlenecks, 
 ## Safety & Reverting
 
 - The Windows script creates a System Restore point by default.
-- The WSL/Linux script backs up existing configs to `~/.dev-optimizer-backups/<timestamp>/`.
+- The Linux script backs up existing configs to `~/.dev-optimizer-backups/<timestamp>/`.
 - Re-enable disabled services with `sudo systemctl enable --now <service>`.
 - Restore backed-up files manually from `~/.dev-optimizer-backups/`.
 
@@ -109,6 +164,7 @@ Results depend on your workload and hardware. These scripts remove bottlenecks, 
 - **Windows**: 10/11
 - **WSL**: WSL2 with Ubuntu/Debian-based distro
 - **Linux**: Debian/Ubuntu derivatives (zram setup uses apt)
+- **macOS**: Not yet supported (contributions welcome)
 
 ## License
 
